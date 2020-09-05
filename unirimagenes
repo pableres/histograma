@@ -1,0 +1,16 @@
+require(gridExtra)
+F1<-grid.arrange(p,p7,p1,p2,p3,p4,p5,p6, nrow= 4)
+F1
+
+require(ggpubr)
+ggpubr::ggarrange(p,p7,p1,p2,p3,p4,p5,p6, labels = c("A", "B", "C" ,"D","E", "F", "G" ,"H"))
+
+require(ggstatsplot)
+combine_plots(
+  p,p7,p1,p2,p3,p4,p5,p6,
+  labels = c("a)", "b)","c)", "d)","e)", "f)","g)", "h)"),
+  title.text = "Histogramas juntitos",
+  caption.text = "",
+  title.color = "black",
+  caption.color = "blue"
+)
