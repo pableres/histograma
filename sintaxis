@@ -1,0 +1,57 @@
+library(ggplot2)
+
+set.seed(1234)
+df <- data.frame(
+  sex=factor(rep(c("M", "H"), each=200)),
+  weight=round(c(rnorm(200, mean=55, sd=5), rnorm(200, mean=65, sd=5)))
+)
+head(df)
+
+#histograma normal
+p<-ggplot(df, aes(x=weight)) + 
+  geom_histogram(aes(y=..density..), colour="black", fill="white")+
+  geom_density(alpha=.2, fill="#FF6666") 
+
+p7<-p+ geom_vline(aes(xintercept=mean(weight)),
+              color="blue", linetype="dashed", size=1)
+p7
+
+p1<-ggplot(df, aes(x=weight,fill=sex, color=sex)) + 
+  geom_histogram(alpha=0.6, position="identity")+
+  geom_density(alpha=.2) 
+p1
+
+p2<-ggplot(df, aes(x=weight,fill=sex, color=sex)) + 
+  geom_histogram(aes(y=..density..), position="identity", alpha=0.5)+
+  geom_density(alpha=.2)
+p2
+
+library(plyr)
+mu <- ddply(df, "sex", summarise, grp.mean=mean(weight))
+head(mu)
+
+p3<-p2+geom_vline(data=mu, aes(xintercept=grp.mean, color=sex),
+              linetype="dashed")+
+  theme_minimal()
+p3
+
+p4<-p<-ggplot(df, aes(x=weight,fill=sex, color=sex)) +
+  geom_histogram(position="dodge",binwidth = 1)+
+  geom_vline(data=mu, aes(xintercept=grp.mean, color=sex),
+             linetype="dashed")
+p4
+p5<-p4+ scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9"))+
+  scale_fill_manual(values=c("#999999", "#E69F00", "#56B4E9"))
+p5
+p6<-p4+scale_color_brewer(palette="Dark2")+
+  scale_fill_brewer(palette="Dark2")
+p6
+
+p
+p1
+p2
+p3
+p4
+p5
+p6
+p7
